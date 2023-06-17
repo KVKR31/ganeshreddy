@@ -1,0 +1,14 @@
+---
+- name: install goma of life
+  hosts: all
+  tasks:
+    - name: install python
+      apt:
+        name: python
+        state: pyton
+    - name: Install Game Of Life
+      pip:
+        name: vinod
+        state: present
+    - name: Run Game Of Life
+      command: python/path/to/game of life.py        
