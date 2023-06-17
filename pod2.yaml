@@ -1,0 +1,231 @@
+### nginx yaml file
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+    - image: nginx
+      name: nginx
+      ports:
+        - name: nginx
+          containerPort: 80
+
+### nginx and alpine with sleep 1d
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exec2
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports: 
+        - containerport: 80
+    - name: alpine
+      image: alpine
+      args: 
+        - sleep
+        - 1d  
+
+
+### nginx and httpd with port 80
+
+---
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: exec3
+spec:
+  containers:
+    - name: gun
+      image: nginx
+      ports:
+        - name: nginx
+          containerPort: 80
+    - name: httpd
+      image: httpd
+      ports:
+        - name: httpd
+          containerport: 80  
+
+### alpine and nginx sleep 1d also alpine in sleep 1d
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exec4
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - name: nginx
+          containerPort: 80 
+    - name: alpine1
+      image: alpine
+      args:
+        - sleep
+        - 1d
+    - name: alpine2
+      image: alpine
+      args:
+        - sleep
+        - 10s 
+
+### restart policy
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: restartalways
+spec:
+  restartPolicy: Always
+  containers:
+    - name: alpine
+      image: alpine
+      args:
+        - sleep
+        - 1s 
+
+### restart never
+
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: restartnever
+spec:
+  restartPolicy: Never
+  containers:
+    - name: alpine
+      image: alpine
+      args:
+        - sleep
+        - 1d
+
+### restart onfailure
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: restartfailure
+spec:
+  restartPolicy: OnFailure
+  containers:
+    - name: failure
+      image: alpine
+      args:
+        - sleep
+        - 3sm
+### restart sucess
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: restartfailure2
+spec:
+  restartPolicy: OnFailure
+  containers:
+    - name: sucess
+      image: alpine
+      args:
+        - sleep
+        - 3s
+
+###  job manifest
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hellojob
+spec:
+  backoffLimit: 5
+  template:           
+    metadata:
+      name: job
+    spec:
+      restartPolicy: OnFailure                  
+      containers:
+        - name: job
+          image: alpine
+          command:
+            - sleep
+            - 5s 
+
+### cronjob manifest
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob
+spec:
+  schedule: '* * * * *'
+  jobTemplate:
+    metadata:
+      name: cronjob
+    spec:
+      backoffLimit: 2
+      template:
+        metadata:
+          name: cronjob
+        spec:
+          restartPolicy: OnFailure  
+          containers:
+            - name: cronjob
+              image: alpine
+              args:
+                - sleep
+                - 3s    
+
+### RS-Activity2 Create 5 Pods with jenkins and alpine in one Pod
+
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name:vinod-rs
+spec:
+  minReadySeconds: 1
+  replicas: 5
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      name: vinod-rs
+      labels:
+        app: jenkins
+    spec:
+      containers:
+        - name: vinod-rs
+          image: jenkins/jenkins:lts-jdk11
+          ports:
+            containerPort: 8080
+        - name: vinod-rs
+          image: alpine: 3
+          args:
+            - sleep
+            - 1d  
+
+### replicaset example manifest
+
+apiVersion: apps/v1	
+kind: ReplicaSet
+metadata:
+  name: vinod-rs
+spec:
+  minReadySeconds: 5
+  replicas: 2
+  selector:
+    matchLabels:
+
+
+

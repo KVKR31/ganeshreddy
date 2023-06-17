@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql-db
+  labels:
+    app: mysql
+spec:
+  containers:
+    - name: mysqldb
+      image: mysql:8
+      ports:
+        - containerPort: 3306
+      volumeMounts:
+        - name: mysql-pvol
+          mountPath: /var/bin/mysql  
+  volumes:
+    - name: mysql-pvol
+      persistentVolumeClaim:
+        claimName: mysql-pvc
+  
+      

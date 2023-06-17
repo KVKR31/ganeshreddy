@@ -1,0 +1,11 @@
+api version: v1
+kind: 	Pod
+metadata:
+  name: mysql
+spec:
+  containers
+    -name: mysql
+    -image: mysql
+    -port 
+      -name: mysql
+      -containerport: 3360 

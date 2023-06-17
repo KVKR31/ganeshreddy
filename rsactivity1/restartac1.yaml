@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: vinod-rs
+spec:
+  minReadySeconds: 1
+  replicas: 5
+  selector:
+    matchLabels:
+      app: jenkins
+  template:
+    metadata:
+      name: jenkins
+      labels:
+        app: jenkins
+    spec:
+      containers:
+        - name: vinod-1
+          image: jenkins/jenkins:lts-jdk11
+          ports:
+            - containerPort: 8080
+        - name: vinod-2
+          image: alpine:3
+          args:
+            - sleep
+            - 1d  

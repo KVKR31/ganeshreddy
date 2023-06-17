@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs
+  labels:
+    app: nginx
+    layers: web
+    Version: "1.23" 
+spec:
+  minReadySeconds: 1
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: nginx-rs
+      labels:
+        app: nginx
+        version: "1.23"
+    spec:
+      containers:
+        - name: vinod
+          image: nginx:1.23
+          ports:
+            - name: nginx
+              containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc
+spec:
+  selector:
+    app: nginx
+  type: ClusterIP
+  ports:
+    - name: nginx
+      port: 80
+      targetPort: 80
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine
+spec:
+  containers:
+    - name: alpine
+      image: alpine
+      command:
+        - sleep
+        - 1d
+
+
+          

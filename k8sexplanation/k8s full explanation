@@ -1,0 +1,257 @@
+### installation off kubernates(k8s)
+
+* KUBETRNATES: kubernates is a greek word which means "helmsman" or "pilot"
+* kubernates is an open source container that automates the deployment , scalig of management of containerized applications.
+    
+*With kubernates you can esaily deploy and manage containerized application across a cluster of  machines scaling them up and down as needed.
+* It Rolling out updates and managing stortage and networking.
+* It provides a portable and extensible platform for managing containerized workloads and services facilitating both declarative configuration and automachine.
+     * it container pods.
+     * pods contain containers.
+* In kubernates nodes present in odd numbers because it elect a masternode to performe infornt of user.
+* If master node become server down then the next node become a master node and it perform like a master node like ther nodes are perform in kubernates.
+
+[preview](/k8s11%20(1).webp) this image show the workloads of pods and there uses. 
+
+
+
+
+
+### LETS INSTALL THE KUBERNATES IN VIRTUALMACHINE using AWS/ASURE cloud accounts.
+
+* First need to install docker in vm machine by using
+   * curl -fsSL get.docker.com -o get-docker.sh
+   * sudo sh get-docker.sh
+
+
+        # shell script
+           * #!/bin/bash
+           * sudo curl -fsSL get.docker.com -o get-docker.sh
+           * sudo sh get-docker.sh
+           * sudo usermod -aG docker ubuntu
+           * sudo swapoff -a
+           * sudo apt update
+
+### After need to install linunx machine in ubuntu
+
+* tps ca-certificates curl
+      #then downlopad google cloud siging key
+      * 		sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://dl.k8s.io/apt/doc/apt-key.gpgsudo apt-get update
+     #then add kubernates api resources
+      * echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+     #then update the package and install kubectl kubeadm kubelet and hold it
+      * sudo apt-get update
+        sudo apt-get install -y kubelet kubeadm kubectl
+        sudo apt-mark hold kubelet kubeadm kubectl
+* upcommands do in all node have you taken 
+### then coming commands do in masternod what you taken 
+  #just init the node to generate some commands to fix/merge with other node
+     
+     * kubeadm init --pod-network-cidr "10.244.0.0/16" --cri-socket "unix:///var/run/cri-dockerd.sock
+  #Then you exit from root and copy paste the command some commands came from init
+   *Need to install docker in ec2 machine by using docker script (manually if you need)
+    #download the script by using
+      * curl -fsSL https://get.docker.com -o install-docker.sh
+     #to verify the script content
+      * cat install-docker.sh
+     #to run the script
+      * sh install-docker.sh --dry-run
+     #to run the script or in sudo mode
+      * sudo sh install-docker.sh
+
+* After installation installation of docker 
+    #get into root mode by using
+      * sudo -i
+    #After weneed to install go language in linux machine /in root
+      * wget https://storage.googleapis.com/golang/getgo/installer_linux
+        chmod +x ./installer_linux
+        ./installer_linux
+        source ~/.bash_profile
+     #After need to clone the cri-dockered from github and go to current directory(cd) cri dockred
+      * git clone https://github.com/Mirantis/cri-dockerd.git
+        cd cri-dockerd        
+     #After make a bin cridockred and build go docker language in cridockered
+      * mkdir bin 
+        go build -o bin/cri-dockerd
+     #
+      * mkdir -p /usr/local/bin
+     #then install root
+      * install -o root -g root -m 0755 bin/cri-dockerd /usr/local/bin/cri-dockerd
+     #
+      * cp -a packaging/systemd/* /etc/systemd/system
+     #
+      * sed -i -e 's,/usr/bin/cri-dockerd,/usr/local/bin/cri-dockerd,' /etc/systemd/system/cri-docker.service
+     #
+      * systemctl daemon-reload
+        systemctl enable cri-docker.service
+        systemctl enable --now cri-docker.socket
+     #go to home directory of root 
+      * cd ~
+     #then need to update and install kubernetes api repository
+      * sudo apt-get update
+       sudo apt-get install -y apt-transport-ht
+
+
+#after you need to apply these command to install fannel
+ * ` kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml `
+
+#after these you need to go workernode and copu some coomands from master and paste it ion wokernode
+* kubeadm join 172.31.88.27:6443 --token h642tj.5nyyr9qnz9658cmn \
+        --cri-socket unix:///var/run/cri-dockerd.sock \
+        --discovery-token-ca-cert-hash sha256:a174700cc44bb27ce69bd2ab392df14049a632612724897e477ddc0fdeb912ac
+ * check the master node using
+    * kubeadm get pods       
+
+ ```
+ ```
+ ### here we see the pods strucher
+   * apiVersion: 
+   * kind:
+   * metadata:
+   * spec:
+
+To apply these commands to execute the yaml
+
+ `kubectl api-resources` every thing in kubernetes object is associated with this. 
+ ` vi podname.yaml `
+ ` kubectl apply -f podename.yaml `
+ ` kubectl get pods `
+ ` kubectl get po -o wide `  these command to see deep in pods
+ ` kubectl get pods -o yaml ` these command to see the breif explanation about manifest of yaml.
+ ` kubectl delete -f podname.yaml ` to delete the pod in machine
+ ` kubectl run nginx-pod --image nginx ` to create pod directly with out using yml manifest.
+ ` kubectl get pods nginx-pod -o yaml` te get yaml file.
+
+ ### kubernates pods life cycle
+  * Pending :
+  * Running	:
+  * Succeeded :
+  * Failed :
+  * Unknown :
+
+### restart kubernates and it types
+ 
+ * restartpolicy only refers to restart of container by the kubelet on the same node.
+ * restartpolicy is applied to all the container present in pods.
+
+   types of restart policy
+    1. NEVER : the container dosent start 
+    2. ALWAYS (defalt) : the pod must always be running and so kubernates creates a new container when ever existing one terminates.
+
+    3. ONFAILURE : The container only restart when it exists with a return code other than 0. if it return code is 0 then it called success.
+
+         exit code ==> sucess
+         exit code ==> failure
+
+### restart policy 
+[preview](/k8s%20restart.png)
+
+### restart never
+[preview](/k8s%20never.png)
+
+### onfailure( failure)
+
+[preview](/on%20failure.png)
+
+### Onfailure (sucess)
+ [previev](/sucess.png)
+
+ ### controllers in kubernates
+ * controllers are control loops that which state of your cluster,they make are request changes here we need.
+ * controller make desire state.
+ * some controllers are
+   - replica set/replication controller 
+   - deployment
+   - statefulset
+   - jobs
+   - cronjobs
+   - demonset
+
+k8s are two types of jobs 
+  * jobs: it run the activiste and complete/end the activist 
+  * cromnjob: it run the activiste and complete/end the activist with specific time period
+   
+* in this statement tell that job has a controller controller has a pod then pod run the container 
+      controller means : templete 
+
+  [preview](/nginx.png)
+   * kubectl port-forward nginx 8080:80                        }    to forward the port 
+   * kubectl port-forward --address "0.0.0.0" nginx 30001:80   }
+
+Controller: In kubernates controller means it control loops that watch the state of your cluster, then make or request changes where needed. 
+
+Controller are 7types
+  1. job  : it controll the pod
+  2. cronjob : it controll the pod
+  3. replicaset : it controll the pod
+  4. replication controller : it controll the pod
+  5. deamon set : it controll the pod
+  6. statefulset : it controll the pod
+  7. deployment : it controll the replicaset
+  [preview](/controllers.webp)
+
+Replica set: replica set is a controller which maintain  how many pods pods are in desire state .
+            or A number of replicas indicating how many Pods it should be maintaining, and a pod template specifying the data of new Pods it should create to meet the number of replicas criteria.
+
+
+In kubernetes everything is stored on STD cluster and in std cluster there is name value pairs and  keys value pairs.
+
+Labels: Labels are key value pairs that can be attached as metadata to k8s objects.
+    or  Labels help in selecting/querying/filtering objects
+
+by using labels we can create pods manually only 1 image that we given in manifest.
+
+  For example ` kubectl run n1 --image=nginx `
+labels can be selected using 1. equality labels
+                              2. set basedd labels  
+
+* equality base selector : Equality based selectors allow filtering by label keys and values
+                           also it mach the selctors
+                           Three operators used in set based equality based selectors are = , == , != .
+* set based equality : The set-based label selector is a general form of equality since environment=production      
+equivalent to environment in (production) ; similarly for != and notin .
+
+* Selector is to select the pod which pod did yo ask means if we have nginx,apache,tomcat4 etc by using this command we can select the pod which we need 
+  ` kubectl get po --selector "app (name)" --show-labels `
+
+* By using label we can edit multiple image in one app/one manifest means for example in manifest you give only jenikins/alpine/nginx etc...
+
+by using this command we can clearly edit it
+` kubectl run n2 --image=nginx --lables "app=jenkins" `
+up command show the manifest give only jenikins but by using labels we can run the another pod nginx.
+
+In equality base selectors we dont need "matchlabel" means we can directly write a app
+
+
+
+### load balancer 
+  1. internal load balancer
+  2. external load balancer
+
+Every service has a virtual ip adress and it not work like a work blancer
+
+* k8s load blancer based on work on labels .
+
+* k8s works on nodes.
+
+[preview](/internal.webp) this image show how internal load blancer works.
+
+when cluster is gone sevice may be down are else by using rm(remove) manually sevice may be deleted.
+
+* svc is not pod it can't down.
+
+### internal connection using k8s
+
+
+
+
+
+
+
+
+
+
+
+
+
+
