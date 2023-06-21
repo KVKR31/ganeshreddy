@@ -1,0 +1,9 @@
+- name: hello ansible
+  hosts: all
+  become: yes
+  tasks:
+    - name: update packages install tree
+      apt:
+        name: tree
+        state: present 
+        update_cache: yes

@@ -1,0 +1,22 @@
+---
+- name: hello apache2 
+  hosts: all
+  become: yes
+  tasks:
+    - name: update packages and install apache2
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+---
+- name: hello ansible
+  hosts: all
+  become: yes
+  tasks:
+    - name: update packages and install tree
+      apt:
+        name: tree
+        state: present
+        update_cache: yes        
+             
