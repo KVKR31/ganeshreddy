@@ -1,27 +1,25 @@
 ---
-- name: verifying php
-  hosts: redhat
+- name: installing http                                           
   become: yes
   tasks:
-    - name: updating packages and installing httpd
+    - name: update packages and install httpd
       ansible.builtin.yum:
         name: httpd
         state: present
-    - name: installing  multi servers
-      ansible.builtin.yum:
-        name: httpd
-        state: present
-    - name:     
-    ansible.builtin.systemd:
-        name: httpd
-        enabled: yes
-        state: restarted    
-    - name: copy php.info page
-      ansible.builtin.copy:
-        src: php.info
-        dest: /var/www/html/php.info 
-    - name: restart php    
+    - name: enable and start apache
       ansible.builtin.systemd:
         name: httpd
         enabled: yes
+        state: started
+    - name: install apache server
+      ansible.builtin.yum:
+        name: php
+        state: present
+    - name: copy the info.php file
+      ansible.builtin.copy:
+        src: info.php
+        dest: /var/www/html/info.php
+    - name: restart apache
+      ansible.builtin.systemd:
+        name: httpd
         state: restarted
