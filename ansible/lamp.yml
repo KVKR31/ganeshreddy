@@ -3,7 +3,7 @@
   hosts: redhat
   become: yes
   tasks:
-    - name: updating packages and installing apahe2
+    - name: updating packages and installing apache2
       ansible.builtin.yum:
         name: apache2
         state: present
