@@ -3,9 +3,9 @@
   hosts: redhat
   become: yes
   tasks:
-    - name: updating packages and installing apache2
+    - name: updating packages and installing httpd
       ansible.builtin.yum:
-        name: apache2
+        name: httpd
         state: present
     - name: installing  multi servers
       ansible.builtin.yum:
@@ -20,6 +20,6 @@
         dest: /var/www/html/php.info 
     - name: restart php    
       ansible.builtin.systemd:
-        name: apache2
+        name: httpd
         enabled: yes
         state: restarted
