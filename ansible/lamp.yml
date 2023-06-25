@@ -1,6 +1,6 @@
 ---
 - name: verifying php
-  hosts: redhat
+  hosts: webserver
   become: yes
   tasks:
     - name: updating packages and installing apahe2
