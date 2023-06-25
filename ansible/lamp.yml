@@ -1,0 +1,25 @@
+---
+- name: verifying php
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: updating packages and installing apahe2
+      ansible.builtin.yum:
+        name: apache2
+        state: present
+    - name: installing  multi servers
+      ansible.builtin.yum:
+        name:
+          - php.info
+          - libapache2-mod-php
+          - php-mysql
+        state: present
+    - name: copy php.info page
+      ansible.builtin.copy:
+        src: php.info
+        dest: /var/www/html/php.info 
+    - name: restart php    
+      ansible.builtin.systemd:
+        name: apache2
+        enabled: yes
+        state: restarted
