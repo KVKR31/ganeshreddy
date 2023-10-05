@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-demo
+spec:
+  containers:
+    - image: mysql:8
+      name: volume
+      volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: volume-demo
+      ports:
+        - containerPort: 8080
+  volumes:
+    - name: volume-demo
+      emptyDir:
+        sizeLimit: 100Mi          
+        
