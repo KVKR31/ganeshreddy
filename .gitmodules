@@ -1,3 +1,6 @@
 [submodule "hi/hi/Git"]
 	path = hi/hi/Git
 	url = https://github.com/KVKR31/Git.git
+[submodule "k8s-sep/Dockerhub/k8s-sep/Dockerhub/Kubernates"]
+	path = k8s-sep/Dockerhub/k8s-sep/Dockerhub/Kubernates
+	url = https://github.com/KVKR31/Kubernates.git
