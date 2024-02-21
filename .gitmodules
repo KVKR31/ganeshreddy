@@ -4,3 +4,6 @@
 [submodule "k8s-sep/Dockerhub/k8s-sep/Dockerhub/Kubernates"]
 	path = k8s-sep/Dockerhub/k8s-sep/Dockerhub/Kubernates
 	url = https://github.com/KVKR31/Kubernates.git
+[submodule "EKS/EKS/Terraform"]
+	path = EKS/EKS/Terraform
+	url = https://github.com/KVKR31/Terraform.git
